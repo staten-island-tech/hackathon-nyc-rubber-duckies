@@ -3,10 +3,14 @@ import random
 
 # Initialize
 pygame.init()
+
+
 WIDTH, HEIGHT = 800, 400
 win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Rooftop Runner")
 
+background_img = pygame.image.load("assets/NY.png").convert()
+background_img = pygame.transform.scale(background_img, (WIDTH, HEIGHT))
 # Colors
 WHITE = (255, 255, 255)
 GRAY = (50, 50, 50)
@@ -16,6 +20,9 @@ BLUE = (50, 100, 255)
 clock = pygame.time.Clock()
 FPS = 60
 
+player_img = pygame.image.load("assets/player.png").convert_alpha()
+player_img = pygame.transform.scale(player_img, (40, 60))
+
 # Player
 player = pygame.Rect(100, 300, 40, 60)
 vel_y = 0
@@ -24,7 +31,13 @@ jump_strength = -15
 is_jumping = False
 
 # Platforms (Rooftops)
-platforms = [pygame.Rect(0, 350, 300, 50)]
+platforms = []
+x = 0
+while x < WIDTH + 200:  # Fill enough for initial screen
+    width = random.randint(100, 200)
+    y = random.randint(300, 360)
+    platforms.append(pygame.Rect(x, y, width, 50))
+    x += width + random.randint(20, 60)  # smaller gap
 platform_speed = 4
 
 # Score
@@ -35,7 +48,8 @@ font = pygame.font.SysFont(None, 36)
 running = True
 while running:
     clock.tick(FPS)
-    win.fill(WHITE)
+    win.blit(background_img, (0, 0))
+
 
     # EVENTS
     for event in pygame.event.get():
@@ -66,8 +80,10 @@ while running:
     # SPAWN NEW PLATFORM
     if platforms[-1].x + platforms[-1].width < WIDTH:
         new_width = random.randint(100, 200)
-        new_gap = random.randint(100, 200)
-        new_plat = pygame.Rect(WIDTH + new_gap, random.randint(300, 360), new_width, 50)
+        new_gap = random.randint(20, 80)  # smaller gap
+        new_height = platforms[-1].y + random.randint(-10, 10)  # similar height
+        new_height = max(200, min(new_height, 360))  # clamp height
+        new_plat = pygame.Rect(WIDTH + new_gap, new_height, new_width, 50)
         platforms.append(new_plat)
 
     # REMOVE OFF-SCREEN PLATFORMS
@@ -78,7 +94,8 @@ while running:
         pygame.draw.rect(win, GRAY, plat)
 
     # DRAW PLAYER
-    pygame.draw.rect(win, BLUE, player)
+    win.blit(player_img, (player.x, player.y))
+
 
     # SCORE
     score += 1
