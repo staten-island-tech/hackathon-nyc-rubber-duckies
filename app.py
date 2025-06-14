@@ -46,8 +46,19 @@ for name in ["cone", "banana"]:
 
 parachute_img_original = pygame.image.load("assets/parachute.png").convert_alpha()
 
+def scale_button(image_path, target_width):
+    img = pygame.image.load(image_path).convert_alpha()
+    scale_factor = target_width / img.get_width()
+    new_height = int(img.get_height() * scale_factor)
+    return pygame.transform.smoothscale(img, (target_width, new_height))
+
+# Resize buttons to be smaller (e.g., 200px wide)
+start_btn_img = scale_button("assets/start.png", 200)
+gameover_btn_img = scale_button("assets/gameover.png", 400)
+youwin_btn_img = scale_button("assets/youwin.png", 200)
+
 # Keep height same as player height (60)
-target_height = 60
+target_height = 75
 
 # Calculate proportional width to keep aspect ratio
 scale_factor = target_height / parachute_img_original.get_height()
@@ -149,8 +160,22 @@ class PowerUp:
     def collides_with(self, player):
         return self.rect.colliderect(player)
 
+def wait_for_button_click(background_img, button_img):
+    button_rect = button_img.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+    while True:
+        win.blit(background_img, (0, 0))
+        win.blit(button_img, button_rect)
+        pygame.display.update()
 
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if button_rect.collidepoint(event.pos):
+                    return
 
+wait_for_button_click(background_img, start_btn_img)
 
 # Game loop
 running = True
@@ -202,7 +227,7 @@ while running:
     # OBSTACLE COLLISION
     for rect, _ in obstacles:
         if player.colliderect(rect):
-            print("Hit obstacle!")  # replace with game over or penalty logic
+            game_result = "lose"
             running = False
 
     # SCROLLING PLATFORMS
@@ -286,6 +311,7 @@ while running:
 
     # GAME OVER (falls below screen)
     if player.top > HEIGHT:
+        game_result = "lose"
         running = False
 
     
@@ -314,6 +340,7 @@ while running:
         # Check player hit by attack
         for attack in boss_attacks:
             if player.colliderect(attack.rect):
+                game_result = "lose"
                 running = False  # Game over
 
         if random.randint(0, 180) == 0:
@@ -338,17 +365,20 @@ while running:
         # Check for pickup
         for p in powerups[:]:
             if p.collides_with(player):
-                boss_health -= 1
+                boss_health -= 5
                 powerups.remove(p)
 
 
 
         # Boss defeated
         if boss_health <= 0:
-            print("Boss defeated!")
+            game_result="win"
             running = False
-
-        
-    
     
     pygame.display.update()
+
+    if 'game_result' in locals():
+        if game_result == "win":
+            wait_for_button_click(background_img, youwin_btn_img)
+        elif game_result == "lose":
+            wait_for_button_click(background_img, gameover_btn_img)
