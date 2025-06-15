@@ -365,7 +365,7 @@ while running:
         # Check for pickup
         for p in powerups[:]:
             if p.collides_with(player):
-                boss_health -= 5
+                boss_health -= 1
                 powerups.remove(p)
 
 
