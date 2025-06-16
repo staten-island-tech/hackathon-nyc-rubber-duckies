@@ -289,7 +289,7 @@ while running:
 
     # SCORE
     score += 1
-    text = font.render(f"Score: {score}", True, (0, 0, 0))
+    text = font.render(f"Score: {score}", True, (255, 255, 255))
     win.blit(text, (10, 10))
 
 
@@ -325,7 +325,11 @@ while running:
         win.blit(text, (WIDTH - 200, 10))         
 
         # Spawn boss attack
+<<<<<<< HEAD
         if random.randint(0, 150) == 0:
+=======
+        if random.randint(0,180) == 0:
+>>>>>>> 008c49c75c595d1483ac3cb7511e260434edff4e
             bullet = BossBullet(boss_rect.centerx, boss_rect.centery, player.centerx, player.centery)
             boss_attacks.append(bullet)
 
