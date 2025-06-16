@@ -19,7 +19,7 @@ WHITE = (255, 255, 255)
 GRAY = (50, 50, 50)
 BLUE = (50, 100, 255)
 
-activation_boss = 50      # Score that has to be reached in order for boss to spawn
+activation_boss = 500      # Score that has to be reached in order for boss to spawn
 
 # Clock
 clock = pygame.time.Clock()
@@ -343,7 +343,7 @@ while running:
                 game_result = "lose"
                 running = False  # Game over
 
-        if random.randint(0, 180) == 0:
+        if random.randint(0, 150) == 0:
             valid_platforms = [p for p in platforms if p[0].right > WIDTH // 2]
             if valid_platforms:
                 platform_rect, _ = random.choice(valid_platforms)
