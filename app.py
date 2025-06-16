@@ -296,10 +296,10 @@ while running:
 
         # Show boss HP
         text = font.render(f"Boss HP: {boss_health}", True, (0, 0, 0))
-        win.blit(text, (WIDTH - 200, 10))
+        win.blit(text, (WIDTH - 200, 10))         
 
         # Spawn boss attack
-        if random.randint(0, 100) == 0:
+        if random.randint(0, 150) == 0:
             bullet = BossBullet(boss_rect.centerx, boss_rect.centery, player.centerx, player.centery)
             boss_attacks.append(bullet)
 
