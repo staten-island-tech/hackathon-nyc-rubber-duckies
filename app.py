@@ -325,7 +325,7 @@ while running:
         win.blit(text, (WIDTH - 200, 10))
 
         # Spawn boss attack
-        if random.randint(0, 150) == 0:
+        if random.randint(0,180) == 0:
             bullet = BossBullet(boss_rect.centerx, boss_rect.centery, player.centerx, player.centery)
             boss_attacks.append(bullet)
 
