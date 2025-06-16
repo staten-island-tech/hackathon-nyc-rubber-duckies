@@ -19,7 +19,7 @@ WHITE = (255, 255, 255)
 GRAY = (50, 50, 50)
 BLUE = (50, 100, 255)
 
-activation_boss = 50      # Score that has to be reached in order for boss to spawn
+activation_boss = 500      # Score that has to be reached in order for boss to spawn
 
 # Clock
 clock = pygame.time.Clock()
@@ -289,7 +289,7 @@ while running:
 
     # SCORE
     score += 1
-    text = font.render(f"Score: {score}", True, (0, 0, 0))
+    text = font.render(f"Score: {score}", True, (255, 255, 255))
     win.blit(text, (10, 10))
 
 
@@ -325,7 +325,7 @@ while running:
         win.blit(text, (WIDTH - 200, 10))
 
         # Spawn boss attack
-        if random.randint(0, 100) == 0:
+        if random.randint(0, 150) == 0:
             bullet = BossBullet(boss_rect.centerx, boss_rect.centery, player.centerx, player.centery)
             boss_attacks.append(bullet)
 
